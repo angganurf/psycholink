@@ -24,10 +24,12 @@ export const loginValidator = z
   });
 export type LoginValitor = z.infer<typeof loginValidator>;
 
-
 /* Register */
 export const registerValidator = z
   .object({
+    name: z.string().min(1, "Name is required"),
+    username: z.string().min(1, "Username is required"),
+    phone: z.string().min(1, "Phone is required"),
     email: z.string().email(),
     withPassword: z.boolean().optional(),
     password: z.string().optional(),

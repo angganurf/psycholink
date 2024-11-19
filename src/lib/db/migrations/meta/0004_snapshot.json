@@ -1,10 +1,8 @@
 {
-  "id": "87587937-d03d-4302-aa10-cc913d42d980",
-  "prevId": "506f32cb-3e53-4219-b883-5a714a890258",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "email_verification_code": {
+    "public.email_verification_code": {
       "name": "email_verification_code",
       "schema": "",
       "columns": {
@@ -45,21 +43,21 @@
         "email_verification_code_user_id_user_id_fk": {
           "name": "email_verification_code_user_id_user_id_fk",
           "tableFrom": "email_verification_code",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "session": {
+    "public.session": {
       "name": "session",
       "schema": "",
       "columns": {
@@ -87,21 +85,21 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {
@@ -143,14 +141,14 @@
       "uniqueConstraints": {
         "user_email_unique": {
           "name": "user_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "oauth_account": {
+    "public.oauth_account": {
       "name": "oauth_account",
       "schema": "",
       "columns": {
@@ -178,15 +176,15 @@
         "oauth_account_user_id_user_id_fk": {
           "name": "oauth_account_user_id_user_id_fk",
           "tableFrom": "oauth_account",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -200,7 +198,7 @@
       },
       "uniqueConstraints": {}
     },
-    "password_reset_token": {
+    "public.password_reset_token": {
       "name": "password_reset_token",
       "schema": "",
       "columns": {
@@ -228,15 +226,15 @@
         "password_reset_token_user_id_user_id_fk": {
           "name": "password_reset_token_user_id_user_id_fk",
           "tableFrom": "password_reset_token",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -246,8 +244,10 @@
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "87587937-d03d-4302-aa10-cc913d42d980",
+  "prevId": "506f32cb-3e53-4219-b883-5a714a890258"
 }

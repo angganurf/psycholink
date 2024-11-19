@@ -49,7 +49,7 @@ export const ForgotPasswordForm = () => {
   const onSubmit = async (data: PasswordResetTokenValidator) => {
     passwordResetTokenMutation.mutate(data);
   };
-  
+
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex w-full max-w-sm flex-col gap-4 rounded-large bg-content1 px-8 pb-10 pt-6 shadow-small">
@@ -86,7 +86,8 @@ export const ForgotPasswordForm = () => {
             fullWidth
             isLoading={passwordResetTokenMutation.isPending}
             color="primary"
-            type="submit">
+            type="submit"
+          >
             Continue
           </Button>
         </form>
@@ -96,7 +97,7 @@ export const ForgotPasswordForm = () => {
           <p className="shrink-0 text-tiny text-default-500">OR</p>
           <Divider className="flex-1" />
         </div>
-        <ProviderForm />
+        {/* <ProviderForm /> */}
         <p className="text-center text-small">
           <Link href="/auth/login" size="sm">
             Sign In

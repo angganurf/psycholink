@@ -52,7 +52,7 @@ export const loginWithGithub = async () => {
     maxAge: 60 * 10,
     sameSite: "lax",
   });
-  
+
   redirect(url.toString());
 };
 
@@ -79,7 +79,7 @@ export const loginWithGoogle = async () => {
     maxAge: 60 * 10,
     sameSite: "lax",
   });
-  
+
   redirect(url.toString());
 };
 
@@ -108,38 +108,38 @@ export const loginWithPassword = action(
       throw new Error("Invalid email or password");
     }
 
-    if (!existingUser.email_verified) {
-      await sendEmailVerificationCode({
-        email,
-        userId: existingUser.id,
-      });
-      if (withoutRedirect) return;
-      return {
-        redirectUrl: `/auth/verify-email?email=${email}`,
-      };
-      // redirect(`/auth/verify-email?email=${email}`);
-    }
+    // if (!existingUser.email_verified) {
+    //   await sendEmailVerificationCode({
+    //     email,
+    //     userId: existingUser.id,
+    //   });
+    //   if (withoutRedirect) return;
+    //   return {
+    //     redirectUrl: `/auth/verify-email?email=${email}`,
+    //   };
+    //   // redirect(`/auth/verify-email?email=${email}`);
+    // }
 
-    if (existingUser.two_factor_secret) {
-      if (code) {
-        const validOTP = await new TOTPController().verify(
-          code.join(""),
-          decodeHex(existingUser.two_factor_secret)
-        );
+    // if (existingUser.two_factor_secret) {
+    //   if (code) {
+    //     const validOTP = await new TOTPController().verify(
+    //       code.join(""),
+    //       decodeHex(existingUser.two_factor_secret)
+    //     );
 
-        if (!validOTP) throw new Error("Invalid code");
-        const session = await lucia.createSession(existingUser.id, {});
-        const sessionCookie = lucia.createSessionCookie(session.id);
-        cookies().set(sessionCookie);
-        return {
-          redirectUrl: `/protected`,
-        };
-        // redirect("/protected");
-      }
-      return {
-        isTwoFactor: true,
-      };
-    }
+    //     if (!validOTP) throw new Error("Invalid code");
+    //     const session = await lucia.createSession(existingUser.id, {});
+    //     const sessionCookie = lucia.createSessionCookie(session.id);
+    //     cookies().set(sessionCookie);
+    //     return {
+    //       redirectUrl: `/protected`,
+    //     };
+    //     // redirect("/protected");
+    //   }
+    //   return {
+    //     isTwoFactor: true,
+    //   };
+    // }
 
     const session = await lucia.createSession(existingUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);

@@ -43,6 +43,9 @@ export default function RegisterForm() {
   const methods = useForm<RegisterValidator>({
     resolver: zodResolver(registerValidator),
     values: {
+      name: "",
+      username: "",
+      phone: "",
       email: "",
     },
   });
@@ -58,6 +61,9 @@ export default function RegisterForm() {
   const registerMutation = useMutation({
     mutationFn: async (input: RegisterValidator) => {
       const data = await register({
+        name: input.name,
+        username: input.username,
+        phone: input.phone,
         email: input.email,
         password: input.password,
       });
@@ -92,7 +98,8 @@ export default function RegisterForm() {
                 onPress={() => {
                   goToPrevStep();
                   setValue("withPassword", false);
-                }}>
+                }}
+              >
                 <Icon
                   className="text-default-500"
                   icon="solar:alt-arrow-left-linear"
@@ -116,9 +123,52 @@ export default function RegisterForm() {
               opacity: { duration: 0.2 },
             }}
             variants={variants}
-            onSubmit={handleSubmit(onSubmit)}>
+            onSubmit={handleSubmit(onSubmit)}
+          >
             {currentStep === 1 ? (
               <>
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        {...field}
+                        label="Full Name"
+                        type="text"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          trigger("name");
+                        }}
+                        variant="bordered"
+                        placeholder="Enter your Full Name"
+                        isInvalid={!!errors.name}
+                        errorMessage={errors.name?.message}
+                      />
+                    );
+                  }}
+                />
+                <Controller
+                  control={control}
+                  name="username"
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        {...field}
+                        label="Username"
+                        type="text"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          trigger("username");
+                        }}
+                        variant="bordered"
+                        placeholder="Enter your username"
+                        isInvalid={!!errors.username}
+                        errorMessage={errors.username?.message}
+                      />
+                    );
+                  }}
+                />
                 <Controller
                   control={control}
                   name="email"
@@ -140,31 +190,27 @@ export default function RegisterForm() {
                     );
                   }}
                 />
-                <Button
-                  fullWidth
-                  color="primary"
-                  type="submit"
-                  isLoading={registerMutation.isPending}
-                  onPress={() => {
-                    setValue("withPassword", false);
-                  }}>
-                  Sign Up with Email
-                </Button>
-
-                <Button
-                  onPress={async () => {
-                    setValue("withPassword", true);
-                    const isValid = await trigger("email");
-                    isValid && goToNextStep();
+                <Controller
+                  control={control}
+                  name="phone"
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        {...field}
+                        label="Phone Number"
+                        type="tel"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          trigger("phone");
+                        }}
+                        variant="bordered"
+                        placeholder="Enter your phone number"
+                        isInvalid={!!errors.phone}
+                        errorMessage={errors.phone?.message}
+                      />
+                    );
                   }}
-                  fullWidth
-                  color="default"
-                  variant="flat">
-                  continue with password
-                </Button>
-              </>
-            ) : (
-              <>
+                />
                 <Controller
                   control={control}
                   name="password"
@@ -198,12 +244,23 @@ export default function RegisterForm() {
                     );
                   }}
                 />
-
                 <Button
                   isLoading={registerMutation.isPending}
                   fullWidth
                   color="primary"
-                  type="submit">
+                  type="submit"
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  isLoading={registerMutation.isPending}
+                  fullWidth
+                  color="primary"
+                  type="submit"
+                >
                   Sign Up
                 </Button>
               </>
@@ -216,7 +273,7 @@ export default function RegisterForm() {
           <p className="shrink-0 text-tiny text-default-500">OR</p>
           <Divider className="flex-1" />
         </div>
-        <ProviderForm />
+        {/* <ProviderForm /> */}
         <p className="text-center text-small">
           Already have an account?&nbsp;
           <Link href="/auth/login" size="sm">

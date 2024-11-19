@@ -71,9 +71,9 @@ export default function LoginForm() {
       if (serverError) {
         throw new Error(serverError);
       }
-      if (data?.isTwoFactor) {
-        goToNextStep();
-      }
+      // if (data?.isTwoFactor) {
+      //   goToNextStep();
+      // }
       if (data?.redirectUrl) {
         router.push(data.redirectUrl);
       }
@@ -104,7 +104,8 @@ export default function LoginForm() {
                 onPress={() => {
                   goToPrevStep();
                   setValue("withPassword", false);
-                }}>
+                }}
+              >
                 <Icon
                   className="text-default-500"
                   icon="solar:alt-arrow-left-linear"
@@ -128,7 +129,8 @@ export default function LoginForm() {
               opacity: { duration: 0.2 },
             }}
             variants={variants}
-            onSubmit={handleSubmit(onSubmit)}>
+            onSubmit={handleSubmit(onSubmit)}
+          >
             {currentStep === 1 ? (
               <>
                 <Controller
@@ -152,27 +154,53 @@ export default function LoginForm() {
                     );
                   }}
                 />
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        {...field}
+                        endContent={
+                          <button type="button" onClick={toggleVisibility}>
+                            {isVisible ? (
+                              <Icon
+                                className="pointer-events-none text-2xl text-default-400"
+                                icon="solar:eye-bold"
+                              />
+                            ) : (
+                              <Icon
+                                className="pointer-events-none text-2xl text-default-400"
+                                icon="solar:eye-closed-linear"
+                              />
+                            )}
+                          </button>
+                        }
+                        label="Password"
+                        name="password"
+                        placeholder="Enter your password"
+                        type={isVisible ? "text" : "password"}
+                        variant="bordered"
+                        isInvalid={!!errors.password}
+                        errorMessage={errors.password?.message}
+                      />
+                    );
+                  }}
+                />
+                <Link
+                  className="text-default-500"
+                  href="/auth/forgot-password"
+                  size="sm"
+                >
+                  Forgot password?
+                </Link>
                 <Button
+                  isLoading={passwordMutation.isPending}
                   fullWidth
-                  isLoading={magicLinkMutation.isPending}
                   color="primary"
                   type="submit"
-                  onPress={() => {
-                    setValue("withPassword", false);
-                  }}>
-                  Log In with Email
-                </Button>
-
-                <Button
-                  onPress={async () => {
-                    setValue("withPassword", true);
-                    const isValid = await trigger("email");
-                    isValid && goToNextStep();
-                  }}
-                  fullWidth
-                  color="default"
-                  variant="flat">
-                  continue with password
+                >
+                  Log In
                 </Button>
               </>
             ) : currentStep === 2 ? (
@@ -213,14 +241,16 @@ export default function LoginForm() {
                 <Link
                   className="text-default-500"
                   href="/auth/forgot-password"
-                  size="sm">
+                  size="sm"
+                >
                   Forgot password?
                 </Link>
                 <Button
                   isLoading={passwordMutation.isPending}
                   fullWidth
                   color="primary"
-                  type="submit">
+                  type="submit"
+                >
                   Log In
                 </Button>
               </>
@@ -245,7 +275,8 @@ export default function LoginForm() {
                           blurOnComplete
                           onValueComplete={(e) => {
                             console.log(e);
-                          }}>
+                          }}
+                        >
                           <PinInput.Label>Verification code</PinInput.Label>
                           <PinInput.Control className="flex items-center gap-1.5">
                             {Array.from(Array(6)).map((id, index) => (
@@ -261,7 +292,8 @@ export default function LoginForm() {
                                     "data-[hover=true]:border-default-400",
                                     "group-data-[focus=true]:border-default-foreground",
                                   ]
-                                )}></PinInput.Input>
+                                )}
+                              ></PinInput.Input>
                             ))}
                           </PinInput.Control>
                         </PinInput.Root>
@@ -274,7 +306,8 @@ export default function LoginForm() {
                   type="submit"
                   isLoading={passwordMutation.isPending}
                   fullWidth
-                  color="primary">
+                  color="primary"
+                >
                   Verify
                 </Button>
               </>
@@ -287,7 +320,7 @@ export default function LoginForm() {
           <p className="shrink-0 text-tiny text-default-500">OR</p>
           <Divider className="flex-1" />
         </div>
-        <ProviderForm />
+        {/* <ProviderForm /> */}
         <p className="text-center text-small">
           Need to create an account?&nbsp;
           <Link href="/auth/register" size="sm">
